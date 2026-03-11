@@ -30,7 +30,7 @@ let main args =
             let lastFile =
                 files
                 |> Seq.fold (fun acc current ->
-                    // Сравниваем строки в порядке алфавита (Ordinal)
+                    // Сравниваем строки в порядке алфавита
                     if String.Compare(current, acc, StringComparison.Ordinal) > 0 then
                         current
                     else
