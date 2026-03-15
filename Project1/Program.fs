@@ -10,50 +10,37 @@ let rec readInt prompt =
     let input = Console.ReadLine()
     match Int32.TryParse input with
     | true, value when value > 0 -> value
-    | true, _ ->
-        printfn "Ошибка: число должно быть положительным. Повторите ввод."
+    | _ ->
+        printfn "Ошибка: введите положительное целое число."
         readInt prompt
-    | false, _ ->
-        printfn "Ошибка: введите целое число. Повторите ввод."
-        readInt prompt
-
-/// Ввод строки
-let readString prompt =
-    printf "%s" prompt
-    Console.ReadLine()
 
 /// Ввод одного символа с проверкой
 let rec readChar prompt =
     printf "%s" prompt
     let input = Console.ReadLine()
-    if String.length input = 1 then
-        input.[0]
+    if String.length input = 1 then input.[0]
     else
-        printfn "Ошибка: требуется ровно один символ. Повторите ввод."
+        printfn "Ошибка: требуется ровно один символ."
         readChar prompt
 
 /// Создаёт последовательность строк заданной длины
-let readStringsSeq count =
+let readStrings count =
     seq {
         for i in 1 .. count do
-            let s = readString (sprintf "Введите строку %d: " i)
-            yield s
+            printf "Введите строку %d: " i
+            yield Console.ReadLine()
     }
+
+/// Добавляет символ в конец каждой строки последовательности
+let appendCharToAll ch strings =
+    strings |> Seq.map (fun s -> s + string ch)
 
 [<EntryPoint>]
 let main args =
-    
-    let n = readInt "Введите количество строк: "
+    let count = readInt "Введите количество строк: "
+    let symbol = readChar "Введите символ для добавления: "
+    let sequence = readStrings count
+    let result = appendCharToAll symbol sequence
 
-    // Получаем последовательность строк и кэшируем её,
-    // чтобы можно было использовать несколько раз без повторного ввода
-    let strings = readStringsSeq n |> Seq.cache
-
-    let ch = readChar "Введите символ для добавления: "
-
-    let result = strings |> Seq.map (fun s -> s + string ch)
-
-    printfn "\nИсходный список: %A" (strings |> List.ofSeq)
-    printfn "Результирующий список: %A" (result |> List.ofSeq)
-
+    printfn "Результат: %A" (result |> Seq.toList)
     0

@@ -9,45 +9,37 @@ let rec readInt prompt =
     let input = Console.ReadLine()
     match Int32.TryParse input with
     | true, value when value > 0 -> value
-    | true, _ ->
-        printfn "Ошибка: число должно быть положительным. Повторите ввод."
+    | _ ->
+        printfn "Ошибка: введите положительное целое число."
         readInt prompt
-    | false, _ ->
-        printfn "Ошибка: введите целое число. Повторите ввод."
-        readInt prompt
-
-/// Ввод строки
-let readString prompt =
-    printf "%s" prompt
-    Console.ReadLine()
 
 /// Создаёт последовательность строк заданной длины
-let readStringsSeq count =
+let readStrings count =
     seq {
         for i in 1 .. count do
-            let s = readString (sprintf "Введите строку %d: " i)
-            yield s
+            printf "Введите строку %d: " i
+            yield Console.ReadLine()
     }
 
 [<EntryPoint>]
-let main args =
+let main _ =
+    let count = readInt "Введите количество строк: "
+    let strings = readStrings count
 
-    let n = readInt "Введите количество строк: "
-
-    // Получаем последовательность строк и кэшируем её,
-    // чтобы можно было использовать несколько раз без повторного ввода
-    let strings = readStringsSeq n |> Seq.cache
-
-    // Поиск самой короткой строки с помощью Seq.fold
-    // Начальное значение – первая строка
-    let shortest =
+    // Находим самую короткую строку с помощью Seq.fold, используя Option
+    let shortestOption =
         strings
         |> Seq.fold (fun acc s ->
-            if String.length s < String.length acc then s else acc
-        ) (Seq.head strings)
+            match acc with
+            | None -> Some s                     // первая строка
+            | Some prev ->
+                if String.length s < String.length prev then Some s else Some prev
+        ) None
 
-    printfn "\nИсходный список: %A" (strings |> List.ofSeq)
-    printfn "Самая короткая строка: \"%s\"" shortest
+    // Извлекаем значение (последовательность не пуста, так как count > 0)
+    let shortest = shortestOption.Value
+
+    printfn "\nСамая короткая строка: \"%s\"" shortest
     printfn "Её длина: %d" (String.length shortest)
 
     0

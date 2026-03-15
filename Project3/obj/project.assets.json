@@ -113,11 +113,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\F#\\Projects\\Project3\\Project3.fsproj",
+      "projectUniqueName": "D:\\F#\\Lab_3\\Project3\\Project3.fsproj",
       "projectName": "Project3",
-      "projectPath": "D:\\F#\\Projects\\Project3\\Project3.fsproj",
+      "projectPath": "D:\\F#\\Lab_3\\Project3\\Project3.fsproj",
       "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-      "outputPath": "D:\\F#\\Projects\\Project3\\obj\\",
+      "outputPath": "D:\\F#\\Lab_3\\Project3\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config"
